@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloom & Root — Blog Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F3EE;
+    --parchment: #EDE5D8;
+    --warm-beige: #D9CABB;
+    --sand: #C4AE94;
+    --clay: #A47E5E;
+    --brown: #6B4F3A;
+    --olive: #7A8C5E;
+    --olive-light: #A0AE82;
+    --muted-orange: #C4784A;
+    --rust: #9E4A2A;
+    --charcoal: #2C2520;
+    --text-body: #3D3028;
+    --text-muted: #7A6D62;
+    --text-light: #A89E95;
+    --white: #FEFCFA;
+    --border: #DDD5C8;
+
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Jost', sans-serif;
+
+    --max-width: 1200px;
+    --reading-width: 720px;
+    --gap: 2rem;
+    --section-gap: 5rem;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text-body);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  /* ── Blueprint Navigation (meta UI) ── */
+  .blueprint-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: var(--charcoal);
+    color: #fff;
+    padding: 0.6rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .blueprint-nav span { color: var(--warm-beige); opacity: 0.6; }
+  .blueprint-nav a {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+  }
+  .blueprint-nav a:hover { opacity: 1; }
+  .blueprint-nav .label {
+    color: var(--muted-orange);
+    opacity: 1;
+    font-weight: 500;
+  }
+
+  /* ── Section Labels ── */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--charcoal);
+    color: var(--muted-orange);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+    padding: 0.3rem 0.75rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── Main Blog Wrapper ── */
+  .blog-wrapper {
+    margin-top: 38px;
+  }
+
+  /* ══════════════════════════════════════
+     HEADER / NAV
+  ══════════════════════════════════════ */
+  .site-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 38px;
+    z-index: 100;
+  }
+
+  .header-top {
+    text-align: center;
+    padding: 2rem 2rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .site-tagline {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 0.5rem;
+  }
+
+  .site-name {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 400;
+    color: var(--charcoal);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+
+  .site-name em {
+    font-style: italic;
+    color: var(--clay);
+  }
+
+  .site-sub {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .main-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .main-nav li a {
+    display: block;
+    padding: 0.9rem 1.3rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-body);
+    text-decoration: none;
+    transition: color 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+
+  .main-nav li a:hover, .main-nav li a.active {
+    color: var(--clay);
+    border-bottom-color: var(--clay);
+  }
+
+  .nav-cta a {
+    background: var(--clay) !important;
+    color: var(--white) !important;
+    border-radius: 2px;
+    border-bottom: none !important;
+    padding: 0.7rem 1.4rem !important;
+    margin-left: 0.5rem;
+  }
+
+  /* ══════════════════════════════════════
+     HERO SECTION
+  ══════════════════════════════════════ */
+  #hero {
+    background: var(--parchment);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(ellipse at 20% 50%, rgba(164,126,94,0.08) 0%, transparent 60%),
+                      radial-gradient(ellipse at 80% 20%, rgba(122,140,94,0.07) 0%, transparent 50%);
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--olive);
+    opacity: 0.5;
+  }
+
+  .hero-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--charcoal);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+    position: relative;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--clay);
+    font-weight: 300;
+  }
+
+  .hero-desc {
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--clay);
+    color: var(--white);
+    padding: 0.85rem 2rem;
+    border: none;
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--brown); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-body);
+    padding: 0.85rem 2rem;
+    border: 1px solid var(--sand);
+    border-radius: 2px;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--clay); color: var(--clay); }
+
+  /* Decorative plant line */
+  .hero-ornament {
+    margin-top: 3rem;
+    color: var(--warm-beige);
+    font-size: 1.5rem;
+    letter-spacing: 0.5rem;
+  }
+
+  /* ══════════════════════════════════════
+     FEATURED STRIP
+  ══════════════════════════════════════ */
+  .featured-strip {
+    background: var(--charcoal);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .featured-strip-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0 2rem;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    flex-shrink: 0;
+  }
+
+  .featured-strip-item:last-child { border-right: none; }
+
+  .strip-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--muted-orange);
+    flex-shrink: 0;
+  }
+
+  .strip-text {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .strip-text strong {
+    color: rgba(255,255,255,0.9);
+    font-weight: 400;
+  }
+
+  /* ══════════════════════════════════════
+     FEATURED ARTICLES
+  ══════════════════════════════════════ */
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  section {
+    padding: var(--section-gap) 0;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 400;
+    color: var(--charcoal);
+    line-height: 1.2;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--clay);
+  }
+
+  .see-all {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--clay);
+    text-decoration: none;
+    border-bottom: 1px solid var(--sand);
+    padding-bottom: 2px;
+    white-space: nowrap;
+    margin-left: 2rem;
+  }
+
+  /* Featured grid: 1 large + 2 small */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+  }
+
+  .article-card {
+    background: var(--white);
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: background 0.2s;
+  }
+
+  .article-card:hover { background: var(--cream); }
+
+  .article-card.featured {
+    grid-row: 1 / 3;
+  }
+
+  .card-image {
+    width: 100%;
+    background: var(--parchment);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-image.tall { aspect-ratio: 3/4; }
+  .card-image.medium { aspect-ratio: 16/10; }
+  .card-image.wide { aspect-ratio: 16/9; }
+
+  /* Placeholder image with botanical illustration feel */
+  .card-image svg {
+    opacity: 0.15;
+    width: 60%;
+    height: auto;
+  }
+
+  .card-image .img-label {
+    position: absolute;
+    bottom: 1rem; left: 1rem;
+    background: var(--charcoal);
+    color: #fff;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 1px;
+    font-family: var(--font-body);
+  }
+
+  .card-body {
+    padding: 1.75rem;
+  }
+
+  .card-body.compact { padding: 1.25rem 1.5rem; }
+
+  .card-category {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 0.6rem;
+  }
+
+  .card-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--charcoal);
+    margin-bottom: 0.75rem;
+  }
+
+  .card-title.small {
+    font-size: 1.1rem;
+  }
+
+  .card-excerpt {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.7rem;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+  }
+
+  .card-meta span::before {
+    content: '·';
+    margin-right: 1rem;
+  }
+
+  .card-meta span:first-child::before { content: none; }
+
+  /* ══════════════════════════════════════
+     CATEGORIES
+  ══════════════════════════════════════ */
+  #categories {
+    background: var(--parchment);
+    padding: var(--section-gap) 0;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .category-card {
+    background: var(--white);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .category-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(44,37,32,0.08);
+    background: var(--cream);
+  }
+
+  .category-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  .category-name {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--charcoal);
+  }
+
+  .category-count {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+
+  /* ══════════════════════════════════════
+     LATEST POSTS GRID
+  ══════════════════════════════════════ */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .post-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .post-card .card-image { aspect-ratio: 4/3; border-radius: 2px; margin-bottom: 1.25rem; }
+
+  .post-card:hover .card-title { color: var(--clay); }
+
+  /* ══════════════════════════════════════
+     SEASONAL BANNER
+  ══════════════════════════════════════ */
+  .seasonal-banner {
+    background: var(--olive);
+    padding: 4rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .seasonal-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+  }
+
+  .seasonal-season {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 1rem;
+  }
+
+  .seasonal-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .seasonal-title em { font-style: italic; }
+
+  .seasonal-desc {
+    max-width: 480px;
+    margin: 0 auto 2rem;
+    color: rgba(255,255,255,0.75);
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+
+  .btn-outline-white {
+    border: 1px solid rgba(255,255,255,0.5);
+    color: var(--white);
+    padding: 0.8rem 2rem;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  .btn-outline-white:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.8); }
+
+  /* ══════════════════════════════════════
+     NEWSLETTER
+  ══════════════════════════════════════ */
+  #newsletter {
+    background: var(--charcoal);
+    padding: var(--section-gap) 2rem;
+    text-align: center;
+  }
+
+  .newsletter-inner {
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .newsletter-icon {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+  }
+
+  .newsletter-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 300;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+
+  .newsletter-title em { font-style: italic; color: var(--sand); }
+
+  .newsletter-desc {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.9rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: 0;
+    max-width: 440px;
+    margin: 0 auto 1rem;
+  }
+
+  .newsletter-input {
+    flex: 1;
+    padding: 0.9rem 1.25rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-right: none;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    outline: none;
+    border-radius: 2px 0 0 2px;
+  }
+
+  .newsletter-input::placeholder { color: rgba(255,255,255,0.3); }
+
+  .newsletter-btn {
+    background: var(--clay);
+    color: var(--white);
+    border: none;
+    padding: 0.9rem 1.75rem;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    border-radius: 0 2px 2px 0;
+    transition: background 0.2s;
+  }
+
+  .newsletter-btn:hover { background: var(--brown); }
+
+  .newsletter-note {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.05em;
+  }
+
+  /* ══════════════════════════════════════
+     ABOUT PREVIEW
+  ══════════════════════════════════════ */
+  .about-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  .about-image-area {
+    background: var(--parchment);
+    aspect-ratio: 4/5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 1px solid var(--border);
+  }
+
+  .about-image-area::after {
+    content: '';
+    position: absolute;
+    inset: -12px -12px 12px 12px;
+    border: 1px solid var(--warm-beige);
+    z-index: -1;
+  }
+
+  .about-label {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 1rem;
+  }
+
+  .about-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--charcoal);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-title em { font-style: italic; color: var(--clay); }
+
+  .about-text {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.85;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .value-tag {
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    padding: 0.35rem 0.9rem;
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-radius: 20px;
+  }
+
+  /* ══════════════════════════════════════
+     RECIPE PREVIEW
+  ══════════════════════════════════════ */
+  .recipe-strip {
+    background: var(--parchment);
+    padding: var(--section-gap) 0;
+  }
+
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+
+  .recipe-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    background: var(--white);
+    border: 1px solid var(--border);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .recipe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(44,37,32,0.1);
+  }
+
+  .recipe-img {
+    aspect-ratio: 1;
+    background: var(--warm-beige);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+  }
+
+  .recipe-body { padding: 1.25rem; }
+
+  .recipe-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--clay);
+    font-family: var(--font-body);
+    margin-bottom: 0.4rem;
+  }
+
+  .recipe-title {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--charcoal);
+    margin-bottom: 0.5rem;
+  }
+
+  .recipe-meta {
+    font-size: 0.68rem;
+    color: var(--text-light);
+    display: flex;
+    gap: 0.75rem;
+    font-family: var(--font-body);
+  }
+
+  /* ══════════════════════════════════════
+     ARTICLE PAGE PREVIEW
+  ══════════════════════════════════════ */
+  #article {
+    background: var(--white);
+  }
+
+  .article-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 4rem;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .article-header { margin-bottom: 2.5rem; }
+
+  .article-breadcrumb {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    font-family: var(--font-body);
+    margin-bottom: 1.25rem;
+  }
+
+  .article-breadcrumb a { color: var(--clay); text-decoration: none; }
+
+  .article-category-badge {
+    display: inline-block;
+    background: var(--olive);
+    color: var(--white);
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    font-family: var(--font-body);
+    margin-bottom: 1rem;
+  }
+
+  .article-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--charcoal);
+    margin-bottom: 1rem;
+  }
+
+  .article-title em { font-style: italic; color: var(--clay); }
+
+  .article-intro {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    border-left: 3px solid var(--sand);
+    padding-left: 1.5rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .article-cover {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    color: var(--text-light);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: var(--font-body);
+  }
+
+  .article-body h2 {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin: 2.5rem 0 1rem;
+    line-height: 1.3;
+  }
+
+  .article-body h3 {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin: 2rem 0 0.75rem;
+  }
+
+  .article-body p {
+    font-size: 0.97rem;
+    line-height: 1.85;
+    color: var(--text-body);
+    margin-bottom: 1.25rem;
+  }
+
+  .article-body .tip-box {
+    background: var(--parchment);
+    border-left: 3px solid var(--olive);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .tip-box p {
+    font-size: 0.9rem !important;
+    color: var(--text-muted) !important;
+    margin: 0 !important;
+  }
+
+  .tip-label {
+    font-size: 0.62rem !important;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--olive) !important;
+    font-family: var(--font-body);
+    margin-bottom: 0.4rem !important;
+    font-weight: 500;
+  }
+
+  .article-divider {
+    text-align: center;
+    margin: 2.5rem 0;
+    color: var(--warm-beige);
+    font-size: 0.9rem;
+    letter-spacing: 0.5rem;
+  }
+
+  /* Sidebar */
+  .sidebar { }
+
+  .sidebar-widget {
+    background: var(--parchment);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+  }
+
+  .widget-title {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .widget-post {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .widget-post:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .widget-thumb {
+    width: 60px;
+    height: 60px;
+    background: var(--warm-beige);
+    flex-shrink: 0;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  .widget-post-title {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    line-height: 1.3;
+    color: var(--charcoal);
+  }
+
+  .widget-post-date {
+    font-size: 0.65rem;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+    font-family: var(--font-body);
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.75rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    border-radius: 20px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .tag:hover { background: var(--clay); color: var(--white); border-color: var(--clay); }
+
+  /* ══════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════ */
+  footer {
+    background: var(--charcoal);
+    padding: 4rem 2rem 2rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .footer-grid {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .footer-brand .site-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-brand p {
+    font-size: 0.82rem;
+    line-height: 1.75;
+    max-width: 240px;
+  }
+
+  .footer-heading {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 1.25rem;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .footer-links a {
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: rgba(255,255,255,0.85); }
+
+  .footer-bottom {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ══════════════════════════════════════
+     DESIGN SYSTEM SECTION
+  ══════════════════════════════════════ */
+  #design-system {
+    background: var(--white);
+    padding: var(--section-gap) 2rem;
+  }
+
+  .ds-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+
+  .ds-block { }
+
+  .ds-title {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .color-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .swatch {
+    width: 48px;
+    height: 48px;
+    border-radius: 2px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .swatch::after {
+    content: attr(data-name);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    font-size: 0.55rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    margin-top: 0.3rem;
+    font-family: var(--font-body);
+    letter-spacing: 0.05em;
+  }
+
+  .type-sample { margin-bottom: 1rem; }
+  .type-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    font-family: var(--font-body);
+    margin-bottom: 0.25rem;
+  }
+
+  .nav-structure { }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-item:last-child { border-bottom: none; }
+
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--warm-beige);
+    flex-shrink: 0;
+  }
+
+  .nav-dot.active { background: var(--clay); }
+
+  .nav-item-name {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--text-body);
+  }
+
+  .nav-item-sub {
+    font-size: 0.7rem;
+    color: var(--text-light);
+    margin-left: auto;
+    font-family: var(--font-body);
+    letter-spacing: 0.05em;
+  }
+
+  /* ══════════════════════════════════════
+     PLATFORM GUIDE
+  ══════════════════════════════════════ */
+  #platform {
+    background: var(--parchment);
+    padding: var(--section-gap) 2rem;
+  }
+
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .platform-card {
+    background: var(--white);
+    padding: 2rem;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  .platform-card.recommended::before {
+    content: 'Recommended';
+    position: absolute;
+    top: -1px; right: 1.5rem;
+    background: var(--clay);
+    color: var(--white);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.75rem;
+    font-family: var(--font-body);
+  }
+
+  .platform-name {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--charcoal);
+    margin-bottom: 0.25rem;
+  }
+
+  .platform-subtitle {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    font-family: var(--font-body);
+    margin-bottom: 1.5rem;
+  }
+
+  .platform-price {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--charcoal);
+    margin-bottom: 1.25rem;
+  }
+
+  .platform-price span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+  }
+
+  .platform-pros, .platform-cons {
+    list-style: none;
+    margin-bottom: 1rem;
+  }
+
+  .platform-pros li, .platform-cons li {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding: 0.3rem 0;
+    padding-left: 1.25rem;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .platform-pros li::before { content: '✓'; position: absolute; left: 0; color: var(--olive); font-size: 0.7rem; }
+  .platform-cons li::before { content: '×'; position: absolute; left: 0; color: var(--rust); font-size: 0.8rem; }
+
+  /* ══════════════════════════════════════
+     SCROLL-BASED ANIMATIONS
+  ══════════════════════════════════════ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up {
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .fade-up-delay-1 { animation-delay: 0.1s; }
+  .fade-up-delay-2 { animation-delay: 0.2s; }
+  .fade-up-delay-3 { animation-delay: 0.3s; }
+
+  /* ══════════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .featured-grid { grid-template-columns: 1fr; }
+    .article-card.featured { grid-row: auto; }
+    .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    .posts-grid { grid-template-columns: repeat(2, 1fr); }
+    .recipe-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .ds-grid { grid-template-columns: 1fr; }
+    .platform-grid { grid-template-columns: 1fr; }
+    .about-split { grid-template-columns: 1fr; }
+    .article-layout { grid-template-columns: 1fr; }
+    .main-nav { flex-wrap: wrap; justify-content: center; }
+    .section-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+  }
+
+  @media (max-width: 600px) {
+    .categories-grid, .posts-grid, .recipe-grid { grid-template-columns: 1fr; }
+    .newsletter-form { flex-direction: column; }
+    .newsletter-input { border-right: 1px solid rgba(255,255,255,0.15); border-bottom: none; border-radius: 2px 2px 0 0; }
+    .newsletter-btn { border-radius: 0 0 2px 2px; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+
+  /* Thin horizontal rule */
+  hr.ornament {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* Blueprint callout boxes */
+  .blueprint-callout {
+    background: rgba(164,126,94,0.06);
+    border: 1px dashed var(--sand);
+    padding: 1.25rem 1.5rem;
+    margin: 0.5rem 0;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    line-height: 1.6;
+  }
+
+  .blueprint-callout strong { color: var(--clay); font-weight: 500; }
+
+</style>
+</head>
+<body>
+
+<!-- ── BLUEPRINT META NAV ── -->
+<nav class="blueprint-nav">
+  <span class="label">📋 BLUEPRINT</span>
+  <span>→</span>
+  <a href="#hero">Hero</a>
+  <a href="#featured">Featured</a>
+  <a href="#categories">Categories</a>
+  <a href="#latest">Latest Posts</a>
+  <a href="#newsletter">Newsletter</a>
+  <a href="#about">About</a>
+  <a href="#recipes">Recipes</a>
+  <a href="#article">Article Page</a>
+  <a href="#design-system">Design System</a>
+  <a href="#platform">Platform Guide</a>
+</nav>
+
+<div class="blog-wrapper">
+
+  <!-- ══════════════════════════════════════
+       SITE HEADER
+  ══════════════════════════════════════ -->
+  <header class="site-header">
+    <div class="header-top">
+      <p class="site-tagline">Seasonal Living · Slow Food · Natural Wellness</p>
+      <h1 class="site-name">Bloom <em>&</em> Root</h1>
+      <p class="site-sub">A journal for intentional living, seasonal cooking & quiet nourishment</p>
+    </div>
+    <nav>
+      <ul class="main-nav">
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Recipes</a></li>
+        <li><a href="#">Seasonal Living</a></li>
+        <li><a href="#">Fermentation</a></li>
+        <li><a href="#">Wellness</a></li>
+        <li><a href="#">About</a></li>
+        <li class="nav-cta"><a href="#">Newsletter ✦</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════ -->
+  <section id="hero">
+    <div class="hero-eyebrow">Spring 2025 Edition</div>
+    <h2 class="hero-title fade-up">
+      Rooted in the<br><em>rhythm of seasons</em>
+    </h2>
+    <p class="hero-desc fade-up fade-up-delay-1">
+      Recipes, rituals, and slow living wisdom for those who want to eat with the earth, nourish their gut, and return to a quieter pace of life.
+    </p>
+    <div class="hero-actions fade-up fade-up-delay-2">
+      <a href="#" class="btn-primary">Explore the Blog</a>
+      <a href="#newsletter" class="btn-secondary">Join the Newsletter</a>
+    </div>
+    <div class="hero-ornament">✦ ✦ ✦</div>
+  </section>
+
+  <!-- Featured topics strip -->
+  <div class="featured-strip">
+    <div class="featured-strip-item">
+      <div class="strip-dot"></div>
+      <span class="strip-text"><strong>Now Reading:</strong> Spring Fermentation Guide</span>
+    </div>
+    <div class="featured-strip-item">
+      <div class="strip-dot"></div>
+      <span class="strip-text"><strong>New Recipe:</strong> Wild Garlic & Miso Soup</span>
+    </div>
+    <div class="featured-strip-item">
+      <div class="strip-dot"></div>
+      <span class="strip-text"><strong>In Season:</strong> Ramps, Asparagus, Nettles</span>
+    </div>
+    <div class="featured-strip-item">
+      <div class="strip-dot"></div>
+      <span class="strip-text"><strong>Newsletter:</strong> 2,400 readers & growing</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       FEATURED ARTICLES
+  ══════════════════════════════════════ -->
+  <section id="featured">
+    <div class="container">
+      <div class="section-label">✦ Featured</div>
+      <div class="section-header">
+        <h2 class="section-title">Stories worth<br><em>sitting with</em></h2>
+        <a href="#" class="see-all">View all articles →</a>
+      </div>
+
+      <div class="featured-grid">
+        <!-- Large featured card -->
+        <a href="#" class="article-card featured">
+          <div class="card-image tall">
+            <svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M50 10 Q60 30 50 50 Q40 30 50 10Z" fill="#7A8C5E"/>
+              <path d="M30 30 Q50 40 50 60 Q30 50 30 30Z" fill="#A0AE82"/>
+              <path d="M70 30 Q50 40 50 60 Q70 50 70 30Z" fill="#A0AE82"/>
+              <path d="M50 55 L50 110" stroke="#6B4F3A" stroke-width="2"/>
+              <path d="M35 70 Q50 75 65 70" stroke="#A0AE82" stroke-width="1.5" fill="none"/>
+              <path d="M40 85 Q50 90 60 85" stroke="#A0AE82" stroke-width="1.5" fill="none"/>
+            </svg>
+            <span class="img-label">Cover Image</span>
+          </div>
+          <div class="card-body">
+            <div class="card-category">Fermentation · Gut Health</div>
+            <h3 class="card-title">The Complete Beginner's Guide to Wild Fermentation at Home</h3>
+            <p class="card-excerpt">Everything you need to start your fermentation journey — from your first jar of sauerkraut to naturally fizzy water kefir, with no special equipment required.</p>
+            <div class="card-meta">
+              <span>April 3, 2025</span>
+              <span>12 min read</span>
+              <span>Fermentation</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Small card 1 -->
+        <a href="#" class="article-card">
+          <div class="card-image medium">
+            <svg viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="50" cy="40" rx="30" ry="15" fill="#D9CABB" opacity="0.6"/>
+              <circle cx="35" cy="28" r="8" fill="#A0AE82" opacity="0.5"/>
+              <circle cx="50" cy="22" r="10" fill="#7A8C5E" opacity="0.4"/>
+              <circle cx="65" cy="28" r="7" fill="#C4AE94" opacity="0.5"/>
+            </svg>
+            <span class="img-label">Cover Image</span>
+          </div>
+          <div class="card-body compact">
+            <div class="card-category">Seasonal Living</div>
+            <h3 class="card-title small">How to Build a Spring Kitchen Pantry with Seasonal Foraged Herbs</h3>
+            <div class="card-meta">
+              <span>March 28</span>
+              <span>8 min read</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Small card 2 -->
+        <a href="#" class="article-card">
+          <div class="card-image medium">
+            <svg viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="20" width="60" height="30" rx="4" fill="#EDE5D8" opacity="0.7"/>
+              <rect x="30" y="28" width="12" height="12" rx="2" fill="#C4784A" opacity="0.5"/>
+              <rect x="46" y="28" width="20" height="4" rx="1" fill="#A89E95" opacity="0.5"/>
+              <rect x="46" y="36" width="14" height="3" rx="1" fill="#A89E95" opacity="0.3"/>
+            </svg>
+            <span class="img-label">Cover Image</span>
+          </div>
+          <div class="card-body compact">
+            <div class="card-category">Wellness</div>
+            <h3 class="card-title small">Morning Rituals for Gut Health: 7 Habits to Begin Before Breakfast</h3>
+            <div class="card-meta">
+              <span>March 21</span>
+              <span>6 min read</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       CATEGORIES
+  ══════════════════════════════════════ -->
+  <section id="categories">
+    <div class="container">
+      <div class="section-label">✦ Explore</div>
+      <div class="section-header">
+        <h2 class="section-title">Find your<br><em>corner</em></h2>
+        <a href="#" class="see-all">All categories →</a>
+      </div>
+
+      <div class="categories-grid">
+        <a href="#" class="category-card">
+          <div class="category-icon">🌿</div>
+          <div class="category-name">Seasonal Recipes</div>
+          <div class="category-count">48 articles</div>
+        </a>
+        <a href="#" class="category-card">
+          <div class="category-icon">🫙</div>
+          <div class="category-name">Fermentation</div>
+          <div class="category-count">32 articles</div>
+        </a>
+        <a href="#" class="category-card">
+          <div class="category-icon">☀️</div>
+          <div class="category-name">Seasonal Living</div>
+          <div class="category-count">27 articles</div>
+        </a>
+        <a href="#" class="category-card">
+          <div class="category-icon">🌸</div>
+          <div class="category-name">Wellness</div>
+          <div class="category-count">21 articles</div>
+        </a>
+        <a href="#" class="category-card">
+          <div class="category-icon">🏡</div>
+          <div class="category-name">Slow Living</div>
+          <div class="category-count">19 articles</div>
+        </a>
+        <a href="#" class="category-card">
+          <div class="category-icon">🌾</div>
+          <div class="category-name">Homesteading</div>
+          <div class="category-count">15 articles</div>
+        </a>
+        <a href="#" class="category-card">
+          <div class="category-icon">📖</div>
+          <div class="category-name">Seasonal Guides</div>
+          <div class="category-count">12 articles</div>
+        </a>
+        <a href="#" class="category-card">
+          <div class="category-icon">🌱</div>
+          <div class="category-name">Natural Living</div>
+          <div class="category-count">18 articles</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       LATEST POSTS
+  ══════════════════════════════════════ -->
+  <section id="latest">
+    <div class="container">
+      <div class="section-label">✦ Latest</div>
+      <div class="section-header">
+        <h2 class="section-title">From the<br><em>journal</em></h2>
+        <a href="#" class="see-all">All posts →</a>
+      </div>
+
+      <div class="posts-grid">
+        <a href="#" class="post-card">
+          <div class="card-image" style="aspect-ratio:4/3;border-radius:2px;margin-bottom:1.25rem;">
+            <svg viewBox="0 0 120 90" fill="none" width="50%" opacity="0.2">
+              <circle cx="60" cy="45" r="30" fill="#7A8C5E"/>
+              <path d="M60 15 Q80 35 60 55 Q40 35 60 15Z" fill="#A0AE82"/>
+            </svg>
+          </div>
+          <div class="card-category">Fermentation</div>
+          <h3 class="card-title small">Water Kefir vs. Milk Kefir: Which Is Better for Your Gut?</h3>
+          <p class="card-excerpt">A deep dive into the differences, benefits, and how to choose the right probiotic drink for your lifestyle.</p>
+          <div class="card-meta"><span>Apr 1, 2025</span><span>9 min</span></div>
+        </a>
+
+        <a href="#" class="post-card">
+          <div class="card-image" style="aspect-ratio:4/3;border-radius:2px;margin-bottom:1.25rem;">
+            <svg viewBox="0 0 120 90" fill="none" width="50%" opacity="0.2">
+              <rect x="30" y="20" width="60" height="50" rx="3" fill="#C4784A"/>
+              <rect x="40" y="30" width="40" height="8" rx="1" fill="#EDE5D8"/>
+            </svg>
+          </div>
+          <div class="card-category">Seasonal Living</div>
+          <h3 class="card-title small">The Spring Equinox Reset: A Simple Ritual for Body and Home</h3>
+          <p class="card-excerpt">How to use the arrival of spring as a gentle anchor for intentional seasonal transitions.</p>
+          <div class="card-meta"><span>Mar 25, 2025</span><span>7 min</span></div>
+        </a>
+
+        <a href="#" class="post-card">
+          <div class="card-image" style="aspect-ratio:4/3;border-radius:2px;margin-bottom:1.25rem;">
+            <svg viewBox="0 0 120 90" fill="none" width="50%" opacity="0.2">
+              <ellipse cx="60" cy="55" rx="35" ry="20" fill="#D9CABB"/>
+              <path d="M60 10 Q70 30 60 50 Q50 30 60 10Z" fill="#7A8C5E"/>
+            </svg>
+          </div>
+          <div class="card-category">Wellness</div>
+          <h3 class="card-title small">Adaptogens in the Kitchen: Everyday Herbs for Stress & Vitality</h3>
+          <p class="card-excerpt">How to easily incorporate ashwagandha, holy basil, and reishi into your daily cooking without supplements.</p>
+          <div class="card-meta"><span>Mar 18, 2025</span><span>11 min</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SEASONAL BANNER
+  ══════════════════════════════════════ -->
+  <div class="seasonal-banner">
+    <p class="seasonal-season">🌿 Now in Season — Spring 2025</p>
+    <h2 class="seasonal-title">The Spring <em>Forager's Table</em></h2>
+    <p class="seasonal-desc">From wild garlic and nettles to dandelion greens — a complete guide to cooking with what spring offers freely.</p>
+    <a href="#" class="btn-outline-white">Read the Seasonal Guide →</a>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       NEWSLETTER
+  ══════════════════════════════════════ -->
+  <section id="newsletter">
+    <div class="newsletter-inner">
+      <div class="newsletter-icon">✉</div>
+      <h2 class="newsletter-title">The <em>Root Letter</em></h2>
+      <p class="newsletter-desc">
+        A calm weekly letter with seasonal recipes, fermentation tips, wellness rituals, and slow living inspiration — delivered every Sunday morning.
+      </p>
+      <div class="newsletter-form">
+        <input type="email" class="newsletter-input" placeholder="your@email.com">
+        <button class="newsletter-btn">Subscribe</button>
+      </div>
+      <p class="newsletter-note">No spam, ever. Unsubscribe any time. 2,400+ readers.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       ABOUT PREVIEW
+  ══════════════════════════════════════ -->
+  <section id="about">
+    <div class="container">
+      <div class="about-split">
+        <div class="about-image-area">
+          <svg viewBox="0 0 120 150" fill="none" width="60%" opacity="0.2">
+            <path d="M60 10 Q80 40 60 70 Q40 40 60 10Z" fill="#7A8C5E"/>
+            <path d="M30 40 Q60 60 60 90 Q30 70 30 40Z" fill="#A0AE82"/>
+            <path d="M90 40 Q60 60 60 90 Q90 70 90 40Z" fill="#A0AE82"/>
+            <path d="M60 85 L60 145" stroke="#6B4F3A" stroke-width="3"/>
+          </svg>
+        </div>
+        <div>
+          <div class="about-label">About This Journal</div>
+          <h2 class="about-title">A space to slow down<br>and <em>eat with intention</em></h2>
+          <p class="about-text">
+            Bloom & Root is an independent editorial blog dedicated to seasonal cooking, gut-friendly fermentation, and the quiet rituals that make everyday life richer. This is a faceless brand built on content, not personality — focused entirely on providing you with the most useful, beautiful, and practical guides for a more intentional life.
+          </p>
+          <div class="about-values">
+            <span class="value-tag">Slow Living</span>
+            <span class="value-tag">Gut Health</span>
+            <span class="value-tag">Seasonal Food</span>
+            <span class="value-tag">Fermentation</span>
+            <span class="value-tag">Natural Wellness</span>
+            <span class="value-tag">Homesteading</span>
+          </div>
+          <a href="#" class="btn-primary">Read our story →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       RECIPE PREVIEW
+  ══════════════════════════════════════ -->
+  <section id="recipes" class="recipe-strip">
+    <div class="container">
+      <div class="section-label">✦ From the Kitchen</div>
+      <div class="section-header">
+        <h2 class="section-title">Seasonal <em>recipes</em></h2>
+        <a href="#" class="see-all">Full recipe index →</a>
+      </div>
+
+      <div class="recipe-grid">
+        <a href="#" class="recipe-card">
+          <div class="recipe-img">🥣</div>
+          <div class="recipe-body">
+            <div class="recipe-tag">Fermentation · Gut-Friendly</div>
+            <div class="recipe-title">Classic Sauerkraut with Caraway Seeds</div>
+            <div class="recipe-meta"><span>⏱ 20 min + 7 days</span><span>🌿 Vegan</span></div>
+          </div>
+        </a>
+        <a href="#" class="recipe-card">
+          <div class="recipe-img">🍵</div>
+          <div class="recipe-body">
+            <div class="recipe-tag">Wellness · Spring</div>
+            <div class="recipe-title">Nourishing Nettle & Lemon Broth</div>
+            <div class="recipe-meta"><span>⏱ 35 min</span><span>🌿 Vegan</span></div>
+          </div>
+        </a>
+        <a href="#" class="recipe-card">
+          <div class="recipe-img">🫙</div>
+          <div class="recipe-body">
+            <div class="recipe-tag">Fermentation</div>
+            <div class="recipe-title">Fizzy Wild Garlic Kvass</div>
+            <div class="recipe-meta"><span>⏱ 15 min + 3 days</span><span>🌿 Vegan</span></div>
+          </div>
+        </a>
+        <a href="#" class="recipe-card">
+          <div class="recipe-img">🥗</div>
+          <div class="recipe-body">
+            <div class="recipe-tag">Seasonal · Spring</div>
+            <div class="recipe-title">Roasted Asparagus with Miso & Tahini</div>
+            <div class="recipe-meta"><span>⏱ 25 min</span><span>🌿 Vegan</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       ARTICLE PAGE PREVIEW
+  ══════════════════════════════════════ -->
+  <section id="article">
+    <div class="container" style="padding-top:3rem; padding-bottom:1rem;">
+      <div class="section-label">✦ Article Page Layout</div>
+    </div>
+    <div class="article-layout">
+      <article>
+        <header class="article-header">
+          <div class="article-breadcrumb">
+            <a href="#">Home</a> → <a href="#">Fermentation</a> → Article
+          </div>
+          <span class="article-category-badge">Fermentation</span>
+          <h1 class="article-title">How to Make Your First<br><em>Wild Fermented Sauerkraut</em></h1>
+          <div class="card-meta" style="margin-bottom:1.5rem;">
+            <span>April 3, 2025</span>
+            <span>12 min read</span>
+            <span>Beginner-friendly</span>
+          </div>
+          <p class="article-intro">
+            Fermentation is one of humanity's oldest food traditions — and one of the easiest ways to transform simple vegetables into gut-nourishing, living foods. This guide walks you through everything you need to begin.
+          </p>
+        </header>
+
+        <div class="article-cover">[ Cover Image: 1200×675px, warm natural photography ]</div>
+
+        <div class="article-body">
+          <h2>Why Fermented Foods Belong in Every Kitchen</h2>
+          <p>
+            Wild fermentation relies on the beneficial bacteria already present on vegetables and in the air around us. Unlike yogurt or commercial probiotics, wild fermented foods create a diverse, living ecosystem of microorganisms that support the gut microbiome in ways science is only beginning to fully understand.
+          </p>
+          <p>
+            The beautiful thing about sauerkraut is that it requires just two ingredients — cabbage and salt — and yet it contains more beneficial bacteria than most expensive probiotic supplements on the market.
+          </p>
+
+          <div class="tip-box">
+            <p class="tip-label">✦ Good to Know</p>
+            <p>Use non-iodized salt (sea salt or kosher salt) for fermentation. Iodized salt inhibits the growth of beneficial bacteria and can result in failed fermentation.</p>
+          </div>
+
+          <h2>What You'll Need</h2>
+          <p>The beauty of home fermentation is its simplicity. You need a clean glass jar (wide-mouth mason jars work perfectly), fresh cabbage, salt, and patience. That's it. No special equipment, no starter cultures, no guesswork.</p>
+
+          <h3>Step 1 — Shred and Massage</h3>
+          <p>Thinly slice the cabbage and place in a large bowl. Add 2% of its weight in salt (about 1 tsp per 300g). Massage firmly for 8–10 minutes until significant liquid is released.</p>
+
+          <div class="article-divider">✦ · · ✦ · · ✦</div>
+
+          <h2>Your Fermentation Timeline</h2>
+          <p>Most sauerkraut reaches optimal flavor and beneficial bacteria count between 7 and 21 days at room temperature. Taste it daily after day 5 to find your preferred level of tanginess.</p>
+        </div>
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-widget">
+          <div class="widget-title">Related Articles</div>
+          <a href="#" class="widget-post">
+            <div class="widget-thumb">🫙</div>
+            <div>
+              <div class="widget-post-title">Water Kefir for Beginners</div>
+              <div class="widget-post-date">March 28 · 10 min</div>
+            </div>
+          </a>
+          <a href="#" class="widget-post">
+            <div class="widget-thumb">🥗</div>
+            <div>
+              <div class="widget-post-title">5 Fermented Foods to Eat Daily</div>
+              <div class="widget-post-date">March 14 · 7 min</div>
+            </div>
+          </a>
+          <a href="#" class="widget-post">
+            <div class="widget-thumb">🌿</div>
+            <div>
+              <div class="widget-post-title">The Gut-Brain Connection</div>
+              <div class="widget-post-date">March 5 · 9 min</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="sidebar-widget">
+          <div class="widget-title">Browse by Tag</div>
+          <div class="tag-cloud">
+            <a href="#" class="tag">fermentation</a>
+            <a href="#" class="tag">gut health</a>
+            <a href="#" class="tag">spring</a>
+            <a href="#" class="tag">vegan</a>
+            <a href="#" class="tag">beginner</a>
+            <a href="#" class="tag">seasonal</a>
+            <a href="#" class="tag">slow food</a>
+            <a href="#" class="tag">probiotics</a>
+            <a href="#" class="tag">homesteading</a>
+          </div>
+        </div>
+
+        <div class="sidebar-widget" style="background:var(--charcoal);border-color:var(--charcoal);">
+          <div class="widget-title" style="color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.1);">✦ The Root Letter</div>
+          <p style="font-size:0.82rem;color:rgba(255,255,255,0.55);margin-bottom:1.25rem;line-height:1.7;">Weekly seasonal recipes & slow living rituals, every Sunday.</p>
+          <input type="email" class="newsletter-input" placeholder="your@email.com" style="width:100%;margin-bottom:0.5rem;border-radius:2px;border-right:1px solid rgba(255,255,255,0.15);">
+          <button class="newsletter-btn" style="width:100%;border-radius:2px;margin-top:0.5rem;">Subscribe Free</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <hr class="ornament">
+
+  <!-- ══════════════════════════════════════
+       DESIGN SYSTEM
+  ══════════════════════════════════════ -->
+  <section id="design-system">
+    <div class="container">
+      <div class="section-label">✦ Design System</div>
+      <h2 class="section-title" style="margin-bottom:3rem;">Brand & Visual <em>Foundation</em></h2>
+
+      <div class="ds-grid">
+        <!-- Colors -->
+        <div class="ds-block">
+          <div class="ds-title">Color Palette</div>
+          <div class="color-swatches" style="margin-bottom:3rem;">
+            <div class="swatch" style="background:#F7F3EE;" data-name="Cream"></div>
+            <div class="swatch" style="background:#EDE5D8;" data-name="Parchment"></div>
+            <div class="swatch" style="background:#D9CABB;" data-name="Warm Beige"></div>
+            <div class="swatch" style="background:#C4AE94;" data-name="Sand"></div>
+            <div class="swatch" style="background:#A47E5E;" data-name="Clay"></div>
+            <div class="swatch" style="background:#6B4F3A;" data-name="Brown"></div>
+            <div class="swatch" style="background:#7A8C5E;" data-name="Olive"></div>
+            <div class="swatch" style="background:#A0AE82;" data-name="Sage"></div>
+            <div class="swatch" style="background:#C4784A;" data-name="Muted Orange"></div>
+            <div class="swatch" style="background:#2C2520;" data-name="Charcoal"></div>
+          </div>
+          <div class="blueprint-callout">
+            <strong>Usage:</strong> Cream/Parchment for backgrounds · Clay/Brown for accents & CTAs · Olive/Sage for categories & nature elements · Charcoal for headers & footer · Muted Orange for highlights
+          </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="ds-block">
+          <div class="ds-title">Typography System</div>
+          <div class="type-sample">
+            <div class="type-label">Display / Hero — Cormorant Garamond Light</div>
+            <div style="font-family:var(--font-serif);font-size:2.2rem;font-weight:300;line-height:1.1;color:var(--charcoal);">The art of<br><em style="color:var(--clay);">slow cooking</em></div>
+          </div>
+          <div class="type-sample">
+            <div class="type-label">Section Titles — Playfair Display</div>
+            <div style="font-family:var(--font-display);font-size:1.4rem;font-weight:400;color:var(--charcoal);">Seasonal Recipes</div>
+          </div>
+          <div class="type-sample">
+            <div class="type-label">Body — Jost Light</div>
+            <div style="font-family:var(--font-body);font-size:0.95rem;font-weight:300;color:var(--text-muted);line-height:1.8;">Warm, readable body text for long-form content. Optimized for reading comfort at 320px max-width columns.</div>
+          </div>
+          <div class="type-sample">
+            <div class="type-label">Labels / Nav — Jost 400, uppercase, tracked</div>
+            <div style="font-family:var(--font-body);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-light);">Seasonal Living · Fermentation · Wellness</div>
+          </div>
+        </div>
+
+        <!-- Navigation Structure -->
+        <div class="ds-block">
+          <div class="ds-title">Navigation Structure</div>
+          <div class="nav-structure">
+            <div class="nav-item">
+              <div class="nav-dot active"></div>
+              <div class="nav-item-name">Home</div>
+              <div class="nav-item-sub">Landing page</div>
+            </div>
+            <div class="nav-item">
+              <div class="nav-dot"></div>
+              <div class="nav-item-name">Blog</div>
+              <div class="nav-item-sub">All posts</div>
+            </div>
+            <div class="nav-item">
+              <div class="nav-dot"></div>
+              <div class="nav-item-name">Recipes</div>
+              <div class="nav-item-sub">Recipe index</div>
+            </div>
+            <div class="nav-item">
+              <div class="nav-dot"></div>
+              <div class="nav-item-name">Seasonal Living</div>
+              <div class="nav-item-sub">Category page</div>
+            </div>
+            <div class="nav-item">
+              <div class="nav-dot"></div>
+              <div class="nav-item-name">Fermentation</div>
+              <div class="nav-item-sub">Category page</div>
+            </div>
+            <div class="nav-item">
+              <div class="nav-dot"></div>
+              <div class="nav-item-name">Wellness</div>
+              <div class="nav-item-sub">Category page</div>
+            </div>
+            <div class="nav-item">
+              <div class="nav-dot"></div>
+              <div class="nav-item-name">About</div>
+              <div class="nav-item-sub">Brand story</div>
+            </div>
+            <div class="nav-item">
+              <div class="nav-dot active"></div>
+              <div class="nav-item-name">Newsletter ✦</div>
+              <div class="nav-item-sub">CTA button</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       PLATFORM GUIDE
+  ══════════════════════════════════════ -->
+  <section id="platform">
+    <div class="container">
+      <div class="section-label">✦ Platform Guide</div>
+      <h2 class="section-title" style="margin-bottom:0.5rem;">Where to <em>build it</em></h2>
+      <p style="color:var(--text-muted);font-size:0.9rem;max-width:560px;">An honest comparison of the best platforms for this type of blog, from free to professional.</p>
+
+      <div class="platform-grid">
+        <div class="platform-card recommended">
+          <div class="platform-name">WordPress.org</div>
+          <div class="platform-subtitle">Self-hosted via Hostinger or SiteGround</div>
+          <div class="platform-price">~$3<span>/month</span></div>
+          <ul class="platform-pros">
+            <li>Full monetization (ads, affiliates, digital products)</li>
+            <li>Own domain (yourblog.com)</li>
+            <li>Full plugin access (SEO, newsletter, ecommerce)</li>
+            <li>Industry standard for long-term blogs</li>
+            <li>Themes: Kadence, Astra, GeneratePress (free)</li>
+          </ul>
+          <ul class="platform-cons">
+            <li>Small monthly cost ($2–5/mo)</li>
+            <li>Slight learning curve</li>
+          </ul>
+          <a href="#" class="btn-primary" style="display:block;text-align:center;margin-top:1.5rem;">Best Choice for Growth</a>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">Framer</div>
+          <div class="platform-subtitle">Design-first website builder</div>
+          <div class="platform-price">Free<span> (paid from $14/mo)</span></div>
+          <ul class="platform-pros">
+            <li>Most beautiful design output</li>
+            <li>Free tier available</li>
+            <li>Fast and modern</li>
+            <li>CMS for blog posts built-in</li>
+          </ul>
+          <ul class="platform-cons">
+            <li>Limited plugins/integrations</li>
+            <li>Less SEO control than WordPress</li>
+            <li>Harder to monetize fully on free plan</li>
+          </ul>
+          <a href="#" class="btn-secondary" style="display:block;text-align:center;margin-top:1.5rem;">Best for Design First</a>
+        </div>
+
+        <div class="platform-card">
+          <div class="platform-name">WordPress.com</div>
+          <div class="platform-subtitle">Hosted by WordPress</div>
+          <div class="platform-price">Free<span> (with limits)</span></div>
+          <ul class="platform-pros">
+            <li>Truly free to start</li>
+            <li>No server management</li>
+            <li>Easy setup</li>
+          </ul>
+          <ul class="platform-cons">
+            <li>WordPress ads on your site (free plan)</li>
+            <li>No custom plugins (free/personal plans)</li>
+            <li>yoursite.wordpress.com subdomain only (free)</li>
+            <li>Monetization severely restricted</li>
+            <li>Not suitable for serious long-term growth</li>
+          </ul>
+          <a href="#" class="btn-secondary" style="display:block;text-align:center;margin-top:1.5rem;">Testing Only</a>
+        </div>
+      </div>
+
+      <div class="blueprint-callout" style="margin-top:2rem;">
+        <strong>My Recommendation:</strong> Start with <strong>Hostinger</strong> (~$2.99/mo) + <strong>WordPress.org</strong> + free <strong>Kadence theme</strong>. This gives you a professional, fully-monetizable blog with no limitations, your own domain, and the exact design you see above — implementable within a weekend. Use the <strong>Kadence</strong> or <strong>Astra</strong> free theme which supports this exact editorial layout style natively.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="site-name">Bloom <em style="font-style:italic;color:var(--sand);">&</em> Root</div>
+        <p>A calm editorial journal about seasonal cooking, fermentation, and the slow living practices that make everyday life more intentional and nourishing.</p>
+      </div>
+
+      <div>
+        <div class="footer-heading">Explore</div>
+        <ul class="footer-links">
+          <li><a href="#">Seasonal Recipes</a></li>
+          <li><a href="#">Fermentation</a></li>
+          <li><a href="#">Wellness</a></li>
+          <li><a href="#">Slow Living</a></li>
+          <li><a href="#">Homesteading</a></li>
+          <li><a href="#">Natural Living</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-heading">Journal</div>
+        <ul class="footer-links">
+          <li><a href="#">All Articles</a></li>
+          <li><a href="#">Recipe Index</a></li>
+          <li><a href="#">Seasonal Guides</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-heading">Stay Connected</div>
+        <ul class="footer-links">
+          <li><a href="#">✉ Newsletter</a></li>
+          <li><a href="#">📌 Pinterest</a></li>
+          <li><a href="#">📷 Instagram</a></li>
+          <li><a href="#">🎥 YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 Bloom & Root. All rights reserved.</span>
+      <span>Privacy Policy · Affiliate Disclosure · Contact</span>
+    </div>
+  </footer>
+
+</div><!-- /blog-wrapper -->
+</body>
+</html>
